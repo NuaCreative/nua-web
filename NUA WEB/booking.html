@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking | NUA Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+      color: #222;
+    }
+
+    header {
+      background-color: #20036e;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    section {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    form button {
+      background-color: #20036e;
+      color: #fff;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    form button:hover {
+      background-color: #3506a0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Booking NUA Studio</h1>
+  </header>
+
+  <section>
+    <h2>Form Pemesanan Layanan</h2>
+    <p>Isi data di bawah untuk melakukan booking layanan desain kami</p>
+
+    <!-- Form WhatsApp -->
+    <form onsubmit="sendWhatsApp(); return false;">
+      <label for="nama">Nama Lengkap:</label>
+      <input type="text" id="nama" name="nama" placeholder="Nama lengkap Anda" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Email Anda" required>
+
+      <label for="telepon">Nomor Telepon:</label>
+      <input type="tel" id="telepon" name="telepon" placeholder="08XXXXXXXXXX" required>
+
+      <label for="produk">Layanan yang Dipesan:</label>
+      <select id="produk" name="produk" required>
+        <option value="">Pilih Layanan</option>
+        <option value="branding">Branding</option>
+        <option value="social_media">Social Media Content</option>
+        <option value="web_design">Web Design</option>
+        <option value="uiux_design">UI/UX Design</option>
+      </select>
+
+      <label for="catatan">Catatan Tambahan:</label>
+      <textarea id="catatan" name="catatan" placeholder="Tulis catatan tambahan..." rows="4"></textarea>
+
+      <button type="submit">Kirim Pesanan</button>
+    </form>
+  </section>
+
+  <script>
+    function sendWhatsApp() {
+      const nama = document.getElementById('nama').value;
+      const email = document.getElementById('email').value;
+      const telepon = document.getElementById('telepon').value;
+      const produk = document.getElementById('produk').value;
+      const catatan = document.getElementById('catatan').value;
+
+      const pesan = `Halo NUA Studio, saya ingin booking layanan:%0A
+Nama: ${nama}%0A
+Email: ${email}%0A
+No Telepon: ${telepon}%0A
+Layanan: ${produk}%0A
+Catatan: ${catatan}`;
+
+      // Ganti nomor WhatsApp di bawah dengan nomor kamu
+      const waNumber = "6283130023327"; 
+      window.open(`https://wa.me/${waNumber}?text=${pesan}`, '_blank');
+    }
+  </script>
+
+</body>
+</html>
