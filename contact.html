@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | NUA Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body { 
+      font-family:'Poppins',sans-serif; 
+      margin:0; 
+      padding:0; 
+      background:#f8f8f8; 
+      color:#222; 
+    }
+
+    /* HEADER */
+    header { 
+      background:#20036e; 
+      color:#fff; 
+      padding:20px; 
+      position:relative;  /* penting untuk posisi menu */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    header h1 {
+      margin:0;
+      font-size:22px;
+    }
+
+    /* ICON HAMBURGER MENU */
+    .menu-btn {
+      position:absolute;
+      right:20px;
+      top:50%;
+      transform:translateY(-50%);
+      background:none;
+      border:none;
+      color:white;
+      font-size:24px;
+      cursor:pointer;
+    }
+
+    /* DROPDOWN MENU */
+    .menu-list {
+      position:absolute;
+      right:20px;
+      top:65px;
+      background:#fff;
+      width:150px;
+      border-radius:8px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
+      display:none;
+      padding:10px 0;
+      list-style:none;
+      z-index:1000;
+    }
+
+    .menu-list li a {
+      display:block;
+      padding:10px 15px;
+      color:#222;
+      text-decoration:none;
+      transition:0.3s;
+    }
+
+    .menu-list li a:hover {
+      background:#efe6ff;
+      color:#20036e;
+    }
+
+    /* CONTACT PANEL */
+    section { padding:40px 20px; max-width:600px; margin:0 auto; }
+    .info { background:#fff; padding:20px; border-radius:10px; 
+            box-shadow:0 2px 8px rgba(0,0,0,0.1); text-align:center; }
+    .info p { margin:10px 0; font-size:16px; }
+
+    .social-links a { 
+      display:inline-block; 
+      margin:0 10px; 
+      color:#20036e; 
+      font-size:24px; 
+      transition:0.3s; 
+    }
+    .social-links a:hover { color:#3506a0; }
+  </style>
+
+</head>
+<body>
+
+  <header>
+    <h1>Contact NUA Studio</h1>
+
+    <!-- Hamburger Menu Icon -->
+    <button class="menu-btn" onclick="toggleMenu()"><i class="fa fa-bars"></i></button>
+
+    <!-- Dropdown Menu -->
+    <ul id="menuList" class="menu-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#product">Product</a></li>
+      <li><a href="katalog.html">Katalog</a></li>
+      <li><a href="booking.html">Booking</a></li>
+    </ul>
+  </header>
+
+  
+  <section>
+    <div class="info">
+      <p><strong>Alamat:</strong> Jl. S Supriadi Sukun, Malang</p>
+      <p><strong>Email:</strong> nuastudio@gmail.com</p>
+      <p><strong>Telepon:</strong> +62 83130023327</p>
+
+      <div class="social-links">
+        <a href="https://www.instagram.com/nua.creative?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@nuastudio" target="_blank"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menuList');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Tutup menu jika klik di luar
+    document.addEventListener('click', function(e){
+      const menu = document.getElementById('menuList');
+      const btn = document.querySelector('.menu-btn');
+      if(!menu.contains(e.target) && !btn.contains(e.target)){
+        menu.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+body {
+    font-family: Arial, sans-serif, 'poppins';
+    background-color: #20036e; /* biru */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background: radial-gradient(circle at top, #000018, #100581);
+}
+
+
+.wrapper {
+  width: 90%;           /* agar tidak terlalu melebar */
+  max-width: 1200px;    /* batas lebar maksimal */
+  margin: 0 auto;       /* posisikan di tengah */
+  background-color: #ffffff; /* opsional: bisa kasih warna */
+  border-radius: 20px;  /* biar kelihatan rounded */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* bayangan lembut */
+  padding: 20px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    background-color: #20036e;
+    padding: 0px 0;
+}
+
+.header img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* SLIDER HEADER FIX — TINGGI PAS & LENGKUNG */
+.header-slider {
+    width: 100%;
+    height: 520px;          /* kamu bisa ubah ke 450/500 jika mau lebih tinggi */
+    object-fit: cover;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    display: block;
+}
+
+/* Navigasi */
+
+.navbar {
+    background-color: transparent;     /* Navbar transparan */
+    border-top: 2px solid #170042;
+    border-bottom: 2px solid #230052;
+    padding: 0px 0;
+}
+
+.navbar a {
+    color: #ffffff;
+    background-color: #030c3f;
+    margin: 0 5px;
+    padding: 8px 20px;
+    text-decoration: none;
+    border: 3px solid rgba(255, 255, 255, 0.3); /* semi-transparent */
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+
+/* Hover effect */
+.navbar a:hover {
+    background-color:#ffffff;
+    color: #030c3f;
+}
+
+
+/* Konten */
+.content {
+    padding: 50px;
+}
+
+.content h2 {
+    text-align: left;
+    font-size: 28px;
+    color: #000000;
+    margin-bottom: 40px;
+}
+
+.content h1 {
+    font-size: 30px;
+    color: #444;
+    margin-bottom: px;
+    text-align: center;
+}
+
+.image-slider {
+  display: flex;
+  overflow-x: auto; /* Bisa digeser ke kanan */
+  scroll-behavior: smooth;
+  gap: 10px; /* Jarak antar foto */
+  padding: 10px;
+}
+
+.image-slider img {
+  width: 200px; /* Ukuran foto */
+  height: 150px;
+  object-fit: cover; /* Menjaga proporsi gambar */
+  border-radius: 10px;
+  flex-shrink: 0; /* Agar gambar tidak mengecil */
+  
+}
+
+.image-slider::-webkit-scrollbar {
+  display: none; /* Sembunyikan scrollbar agar lebih bersih */
+}
+
+/* LOGO FIXED DI KIRI ATAS */
+.logo-header {
+  position: fixed;
+  top: 0px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.logo-header .logo {
+  height: 70px; /* ubah sesuai ukuran yang kamu mau */
+  width: auto;
+  border-top-right-radius: 80px;
+  border-bottom-left-radius: px;
+  border-bottom-right-radius: 80px;
+
+}
+#product {
+  scroll-margin-top: 200px; /* jarak dari top saat scroll */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* Footer */
+    footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: #1a1461;
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+body {
+  margin: 0;
+  padding-bottom: 60px; /* beri ruang agar konten tidak tertutup footer */
+}
+
