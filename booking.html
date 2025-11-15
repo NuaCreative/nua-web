@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking | NUA Studio</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -28,7 +30,7 @@
       font-size: 28px;
     }
 
-    /* Back Button */
+    /* Tombol Kembali */
     .back-btn {
       position: absolute;
       left: 20px;
@@ -37,10 +39,6 @@
       color: #fff;
       text-decoration: none;
       font-size: 20px;
-    }
-
-    .back-btn:hover {
-      color: #ddd;
     }
 
     section {
@@ -82,44 +80,126 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.3s;
+      width: 100%;
+      transition: 0.3s;
     }
 
     form button:hover {
       background-color: #3506a0;
     }
+
+    /* Loading Popup */
+    #loadingWA {
+      display:none;
+      position:fixed;
+      top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(3px);
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    #loadingBox {
+      background:#fff;
+      padding:25px 35px;
+      border-radius:12px;
+      font-size:16px;
+      color:#333;
+      box-shadow:0 4px 12px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <a href="index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
     <h1>Booking NUA Studio</h1>
   </header>
 
+  <!-- CONTENT -->
   <section>
     <h2>Form Pemesanan Layanan</h2>
-    <p>Isi data di bawah untuk melakukan booking layanan desain kami</p>
+    <p>Isi data berikut untuk melakukan booking layanan desain kami.</p>
 
-    <!-- Form WhatsApp -->
     <form onsubmit="sendWhatsApp(); return false;">
+
       <label for="nama">Nama Lengkap:</label>
-      <input type="text" id="nama" name="nama" placeholder="Nama lengkap Anda" required>
+      <input type="text" id="nama" required>
 
       <label for="email">Email:</label>
-      <input type="email" id="email" name="email" placeholder="Email Anda" required>
+      <input type="email" id="email" required>
 
       <label for="telepon">Nomor Telepon:</label>
-      <input type="tel" id="telepon" name="telepon" placeholder="08XXXXXXXXXX" required>
+      <input type="tel" id="telepon" placeholder="08XXXXXXXXXX" required>
 
       <label for="produk">Layanan yang Dipesan:</label>
-      <select id="produk" name="produk" required>
+      <select id="produk" required>
         <option value="">Pilih Layanan</option>
-        <option value="branding">Branding</option>
-        <option value="social_media">Social Media Content</option>
-        <option value="web_design">Web Design</option>
-        <option value="uiux_design">UI/UX Design</option>
+        <option value="Branding">Branding</option>
+        <option value="Social Media Content">Social Media Content</option>
+        <option value="Web Design">Web Design</option>
+        <option value="UI/UX Design">UI/UX Design</option>
       </select>
 
       <label for="catatan">Catatan Tambahan:</label>
-      <textarea id="catatan" name="catatan" placeholder="Tulis catat
+      <textarea id="catatan" placeholder="Tulis catatan tambahan..."></textarea>
+
+      <button type="submit">Kirim Booking via WhatsApp</button>
+    </form>
+  </section>
+
+  <!-- LOADING POPUP -->
+  <div id="loadingWA">
+    <div id="loadingBox">Menghubungkan ke WhatsApp...</div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    function sendWhatsApp() {
+      const nama = document.getElementById("nama").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const telepon = document.getElementById("telepon").value.trim();
+      const produk = document.getElementById("produk").value;
+      const catatan = document.getElementById("catatan").value.trim();
+
+      // VALIDASI NOMOR HP
+      const hpValid = /^08[0-9]{8,11}$/;
+      if (!hpValid.test(telepon)) {
+        alert("Nomor telepon harus diawali 08 dan panjang 10–13 digit.");
+        return;
+      }
+
+      // TAMPILKAN LOADING
+      document.getElementById("loadingWA").style.display = "flex";
+
+      // KONVERSI 08 → 628
+      const teleponFormatWA = "628" + telepon.substring(2);
+
+      // FORMAT PESAN WA RAPi & PROFESIONAL
+      const pesan =
+`📌 *Booking Layanan NUA Studio*
+
+Nama: ${nama}
+Email: ${email}
+Telepon: ${telepon}
+Layanan: ${produk}
+Catatan Tambahan: ${catatan}
+
+Terima kasih!`;
+
+      const nomorAdmin = "6283130023327"; // NOMOR KAMU
+
+      const url = `https://wa.me/${nomorAdmin}?text=${encodeURIComponent(pesan)}`;
+
+      // DELAY AGAR LOADING TERLIHAT
+      setTimeout(() => {
+        window.location.href = url;
+      }, 900);
+    }
+  </script>
+
+</body>
+</html>
