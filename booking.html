@@ -123,34 +123,4 @@
       </select>
 
       <label for="catatan">Catatan Tambahan:</label>
-      <textarea id="catatan" name="catatan" placeholder="Tulis catatan tambahan..."></textarea>
-
-      <button type="submit">Kirim Booking via WhatsApp</button>
-    </form>
-  </section>
-
-  <!-- SCRIPT -->
-  <script>
-    function sendWhatsApp() {
-      const nama = document.getElementById("nama").value;
-      const email = document.getElementById("email").value;
-      const telepon = document.getElementById("telepon").value;
-      const produk = document.getElementById("produk").value;
-      const catatan = document.getElementById("catatan").value;
-
-      const pesan =
-        `Halo, saya ingin booking layanan NUA Studio.%0A` +
-        `Nama: ${nama}%0A` +
-        `Email: ${email}%0A` +
-        `Telepon: ${telepon}%0A` +
-        `Layanan: ${produk}%0A` +
-        `Catatan: ${catatan}`;
-
-      const nomorAdmin = "+6283130023327"; // Ganti dengan nomor WA kamu
-
-       window.open(`https://wa.me/${nomorAdmin}?text=${pesan}`, "_blank");
-    }
-  </script>
-
-</body>
-</html>
+      <textarea id="catatan" name="catatan" placeholder="Tulis catat
