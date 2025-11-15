@@ -42,8 +42,6 @@ body {
 /* NAVBAR */
 .navbar {
     background-color: transparent !important;
-    /* border-top: 2px solid #170042;
-    border-bottom: 2px solid #230052; */
 }
 .navbar a {
     color: #fff;
