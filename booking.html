@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking | NUA Studio</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -28,7 +30,7 @@
       font-size: 28px;
     }
 
-    /* Back Button */
+    /* Tombol Kembali */
     .back-btn {
       position: absolute;
       left: 20px;
@@ -37,10 +39,6 @@
       color: #fff;
       text-decoration: none;
       font-size: 20px;
-    }
-
-    .back-btn:hover {
-      color: #ddd;
     }
 
     section {
@@ -82,7 +80,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.3s;
+      width: 100%;
     }
 
     form button:hover {
@@ -92,17 +90,20 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <a href="index.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
     <h1>Booking NUA Studio</h1>
   </header>
 
+  <!-- CONTENT -->
   <section>
     <h2>Form Pemesanan Layanan</h2>
-    <p>Isi data di bawah untuk melakukan booking layanan desain kami</p>
+    <p>Isi data berikut untuk melakukan booking layanan desain kami.</p>
 
-    <!-- Form WhatsApp -->
+    <!-- FORM WA -->
     <form onsubmit="sendWhatsApp(); return false;">
+
       <label for="nama">Nama Lengkap:</label>
       <input type="text" id="nama" name="nama" placeholder="Nama lengkap Anda" required>
 
@@ -115,11 +116,41 @@
       <label for="produk">Layanan yang Dipesan:</label>
       <select id="produk" name="produk" required>
         <option value="">Pilih Layanan</option>
-        <option value="branding">Branding</option>
-        <option value="social_media">Social Media Content</option>
-        <option value="web_design">Web Design</option>
-        <option value="uiux_design">UI/UX Design</option>
+        <option value="Branding">Branding</option>
+        <option value="Social Media Content">Social Media Content</option>
+        <option value="Web Design">Web Design</option>
+        <option value="UI/UX Design">UI/UX Design</option>
       </select>
 
       <label for="catatan">Catatan Tambahan:</label>
-      <textarea id="catatan" name="catatan" placeholder="Tulis catat
+      <textarea id="catatan" name="catatan" placeholder="Tulis catatan tambahan..."></textarea>
+
+      <button type="submit">Kirim Booking via WhatsApp</button>
+    </form>
+  </section>
+
+  <!-- SCRIPT -->
+  <script>
+    function sendWhatsApp() {
+      const nama = document.getElementById("nama").value;
+      const email = document.getElementById("email").value;
+      const telepon = document.getElementById("telepon").value;
+      const produk = document.getElementById("produk").value;
+      const catatan = document.getElementById("catatan").value;
+
+      const pesan =
+        `Halo, saya ingin booking layanan NUA Studio.%0A` +
+        `Nama: ${nama}%0A` +
+        `Email: ${email}%0A` +
+        `Telepon: ${telepon}%0A` +
+        `Layanan: ${produk}%0A` +
+        `Catatan: ${catatan}`;
+
+      const nomorAdmin = "+6283130023327"; // Ganti dengan nomor WA kamu
+
+       window.open(`https://wa.me/${nomorAdmin}?text=${pesan}`, "_blank");
+    }
+  </script>
+
+</body>
+</html>
