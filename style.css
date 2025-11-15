@@ -48,6 +48,8 @@ body {
 .navbar a {
     color: #fff;
     background-color: #030c3f;
+    text-align: center; 
+    width: 100px;  
     margin: 0 5px;
     padding: 8px 20px;
     border-radius: 20px;
@@ -62,6 +64,34 @@ body {
 
 .navbar .navbar-toggler {
     margin-left: auto; /* dorong ke kanan */
+}
+
+@media (max-width: 991px) {
+    .navbar-collapse .nav-link {
+        display: block;          /* stack vertical */
+        width: 150px;            /* panjang tombol sama semua */
+        padding: 6px 0;          /* vertical padding */
+        margin: 2px auto;        /* jarak antar tombol + center horizontal */
+        text-align: center;      /* teks tetap di tengah */
+        border-radius: 15px;     /* rounded border */
+        border: 2px solid rgba(255,255,255,0.4); /* border tetap */
+    }
+}
+
+@media (max-width: 991px) { /* breakpoint navbar-expand-lg */
+    .navbar-collapse {
+        display: flex;
+        justify-content: flex-end; /* dorong menu ke kanan */
+    }
+
+    .navbar-collapse .navbar-nav {
+        text-align: right;  /* teks tetap rata kanan */
+    }
+
+    .navbar-collapse .nav-link {
+        display: block;     /* tetap stacked vertical */
+        padding: 6px 15px;  /* sesuaikan lebar tombol */
+    }
 }
 
 
