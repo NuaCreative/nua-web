@@ -81,33 +81,10 @@
       cursor: pointer;
       font-size: 16px;
       width: 100%;
-      transition: 0.3s;
     }
 
     form button:hover {
       background-color: #3506a0;
-    }
-
-    /* Loading Popup */
-    #loadingWA {
-      display:none;
-      position:fixed;
-      top:0; left:0; right:0; bottom:0;
-      background:rgba(0,0,0,0.6);
-      backdrop-filter:blur(3px);
-      z-index:9999;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    #loadingBox {
-      background:#fff;
-      padding:25px 35px;
-      border-radius:12px;
-      font-size:16px;
-      color:#333;
-      box-shadow:0 4px 12px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -124,19 +101,20 @@
     <h2>Form Pemesanan Layanan</h2>
     <p>Isi data berikut untuk melakukan booking layanan desain kami.</p>
 
+    <!-- FORM WA -->
     <form onsubmit="sendWhatsApp(); return false;">
 
       <label for="nama">Nama Lengkap:</label>
-      <input type="text" id="nama" required>
+      <input type="text" id="nama" name="nama" placeholder="Nama lengkap Anda" required>
 
       <label for="email">Email:</label>
-      <input type="email" id="email" required>
+      <input type="email" id="email" name="email" placeholder="Email Anda" required>
 
       <label for="telepon">Nomor Telepon:</label>
-      <input type="tel" id="telepon" placeholder="08XXXXXXXXXX" required>
+      <input type="tel" id="telepon" name="telepon" placeholder="08XXXXXXXXXX" required>
 
       <label for="produk">Layanan yang Dipesan:</label>
-      <select id="produk" required>
+      <select id="produk" name="produk" required>
         <option value="">Pilih Layanan</option>
         <option value="Branding">Branding</option>
         <option value="Social Media Content">Social Media Content</option>
@@ -145,59 +123,32 @@
       </select>
 
       <label for="catatan">Catatan Tambahan:</label>
-      <textarea id="catatan" placeholder="Tulis catatan tambahan..."></textarea>
+      <textarea id="catatan" name="catatan" placeholder="Tulis catatan tambahan..."></textarea>
 
       <button type="submit">Kirim Booking via WhatsApp</button>
     </form>
   </section>
 
-  <!-- LOADING POPUP -->
-  <div id="loadingWA">
-    <div id="loadingBox">Menghubungkan ke WhatsApp...</div>
-  </div>
-
   <!-- SCRIPT -->
   <script>
     function sendWhatsApp() {
-      const nama = document.getElementById("nama").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const telepon = document.getElementById("telepon").value.trim();
+      const nama = document.getElementById("nama").value;
+      const email = document.getElementById("email").value;
+      const telepon = document.getElementById("telepon").value;
       const produk = document.getElementById("produk").value;
-      const catatan = document.getElementById("catatan").value.trim();
+      const catatan = document.getElementById("catatan").value;
 
-      // VALIDASI NOMOR HP
-      const hpValid = /^08[0-9]{8,11}$/;
-      if (!hpValid.test(telepon)) {
-        alert("Nomor telepon harus diawali 08 dan panjang 10–13 digit.");
-        return;
-      }
-
-      // TAMPILKAN LOADING
-      document.getElementById("loadingWA").style.display = "flex";
-
-      // KONVERSI 08 → 628
-      const teleponFormatWA = "628" + telepon.substring(2);
-
-      // FORMAT PESAN WA RAPi & PROFESIONAL
       const pesan =
-`📌 *Booking Layanan NUA Studio*
+        `Halo, saya ingin booking layanan NUA Studio.%0A` +
+        `Nama: ${nama}%0A` +
+        `Email: ${email}%0A` +
+        `Telepon: ${telepon}%0A` +
+        `Layanan: ${produk}%0A` +
+        `Catatan: ${catatan}`;
 
-Nama: ${nama}
-Email: ${email}
-Telepon: ${telepon}
-Layanan: ${produk}
-Catatan Tambahan: ${catatan}
+      const nomorAdmin = "+6283130023327"; // Ganti dengan nomor WA kamu
 
-Terima kasih!`;
-
-      const nomorAdmin = "6283130023327"; // NOMOR KAMU
-
-      const url = `https://wa.me/${nomorAdmin}?text=${encodeURIComponent(pesan)}`;
-
-      // DELAY AGAR LOADING TERLIHAT
-      setTimeout(() => {
-        window.location.href = url;
-      }, 900);
+       window.open(`https://wa.me/${nomorAdmin}?text=${pesan}`, "_blank");
     }
   </script>
 
