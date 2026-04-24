@@ -14,7 +14,7 @@
     .action-btn { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
     .btn-wa { background: #25d366; color: white; }
     .btn-preview { background: #fff; color: #000; }
-    .logout-btn { background: none; color: #ff4444; border: none; cursor: pointer; display: block; margin: 20px auto; }
+    .logout-btn { background: none; color: #ff4444; border: none; cursor: pointer; display: block; margin: 20px auto; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -34,7 +34,7 @@
   <button class="btn-gen" onclick="generate()">GENERATE INVOICE</button>
 
   <div class="result" id="resultArea">
-    <p style="margin:0; color:#c6a96b;">Invoice Berhasil!</p>
+    <p style="margin:0; color:#c6a96b; font-weight:bold;">Invoice Berhasil!</p>
     <div class="link-box" id="displayLink"></div>
     <button class="action-btn btn-preview" onclick="openLink()">Preview Online</button>
     <button class="action-btn btn-wa" onclick="sendWA()">Kirim via WhatsApp</button>
@@ -50,7 +50,6 @@
   }
 
   let currentLink = "";
-  let currentNama = "";
 
   function generate() {
     const nama = document.getElementById("nama").value;
@@ -63,21 +62,41 @@
     }
 
     const invID = "NUA-" + Date.now();
-    // SESUAIKAN LINK DIBAWAH INI DENGAN LINK GITHUB KAMU
+    // LINK GITHUB PAGES KAMU
     const baseUrl = "https://nuacreative.github.io/nua-web/invoice.html";
     
-    currentNama = nama;
-    currentLink = `${baseUrl}?id=${invID}&nama=${encodeURIComponent(nama)}&produk=${encodeURIComponent(produk)}&harga=${harga}`;
-
+    // RAKIT LINK
+    currentLink = `${baseUrl}?id=${invID}&nama=${encodeURIComponent(nama)}&produk=${encodeURIComponent(produk)}&harga=${harga}&v=${Date.now()}`;
+    
+    // TAMPILKAN HASIL
     document.getElementById("resultArea").style.display = "block";
     document.getElementById("displayLink").innerText = currentLink;
   }
 
-  function openLink() { window.open(currentLink, "_blank"); }
+  function openLink() { 
+    if(currentLink) window.open(currentLink, "_blank"); 
+  }
 
   function sendWA() {
-    const pesan = `Halo ${currentNama},%0A%0ABerikut adalah invoice resmi dari NUA Studio.%0ASilakan klik link di bawah ini untuk detailnya:%0A%0A${currentLink}%0A%0ATerima kasih!`;
-    window.open(`https://wa.me/?text=${pesan}`, "_blank");
+    if (!currentLink) {
+      alert("Generate invoice dulu!");
+      return;
+    }
+    
+    const namaClient = document.getElementById("nama").value;
+    
+    // Tulis pesan dengan Enter normal (seperti ngetik biasa)
+    const pesan = `Halo *${namaClient}*,
+
+Berikut adalah invoice resmi dari *NUA Studio*.
+
+Silakan klik link di bawah ini untuk melihat detail tagihan:
+${currentLink}
+
+Terima kasih telah mempercayakan project Anda kepada kami!`;
+    
+    // Kode ini akan merapikan teksnya secara otomatis untuk WhatsApp
+    window.open(`https://wa.me/?text=${encodeURIComponent(pesan)}`, "_blank");
   }
 
   function logout() {

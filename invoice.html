@@ -27,6 +27,8 @@
 </head>
 <body>
 
+<div id="v3-final-system" style="display:none;"></div>
+
 <div class="invoice">
   <div class="top">
     <div class="brand">
@@ -35,8 +37,6 @@
     </div>
     <div class="meta">
       <div id="invoiceID">ID: ...</div>
-      <div id="date">Date: ...</div>
-      <div id="due">Due: ...</div>
     </div>
   </div>
 
@@ -69,14 +69,12 @@
 </div>
 
 <script>
-  // Mengambil data dari URL
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
   const nama = params.get("nama");
   const produk = params.get("produk");
   const harga = params.get("harga");
 
-  // Jika ID ditemukan, masukkan data ke HTML
   if (id) {
     document.getElementById("invoiceID").innerText = "ID: " + id;
     document.getElementById("dispNama").innerText = nama || "Client";
@@ -84,14 +82,6 @@
     
     const nominal = parseInt(harga) || 0;
     document.getElementById("dispHarga").innerText = "Rp " + nominal.toLocaleString("id-ID");
-
-    const tgl = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById("date").innerText = "Date: " + tgl.toLocaleDateString("id-ID", options);
-    
-    const due = new Date();
-    due.setDate(tgl.getDate() + 3);
-    document.getElementById("due").innerText = "Due: " + due.toLocaleDateString("id-ID", options);
   }
 </script>
 </body>
