@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice - NUA Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #0f0f14; font-family: 'Poppins', sans-serif; color: #333; padding: 40px; }
+    .invoice { max-width: 750px; margin: auto; background: #ffffff; border-radius: 14px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); position: relative; overflow: hidden; }
+    .invoice::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, #20036e, #c6a96b); }
+    .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .brand h1 { margin: 0; font-size: 28px; color: #20036e; letter-spacing: 1px; font-family: 'Playfair Display', serif;}
+    .brand p { margin: 0; font-size: 12px; color: #777; }
+    .meta { text-align: right; font-size: 13px; color: #666; }
+    .section { margin-bottom: 25px; }
+    .label { font-size: 12px; color: #999; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+    .value { font-size: 16px; font-weight: 500; }
+    .divider { height: 1px; background: #eee; margin: 30px 0; }
+    .total-box { display: flex; justify-content: space-between; align-items: center; }
+    .total-box h2 { margin: 0; font-size: 14px; color: #777; }
+    .total-price { font-size: 24px; font-weight: bold; color: #20036e; }
+    .status { margin-top: 25px; font-size: 13px; font-weight: 500; }
+    .pending { color: #c59d00; }
+    .pay-btn { display: inline-block; margin-top: 30px; padding: 14px 24px; background: linear-gradient(90deg, #20036e, #3d0fbf); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; }
+    .footer { margin-top: 40px; font-size: 12px; color: #aaa; text-align: center; }
+    .rekening h3 {
+      margin-bottom: -28px; 
+    }
+    .rekening h4 {
+      margin-bottom: -6px; 
+    }
+    .rekening p {
+      margin-top: 0; 
+      color: #666; 
+    }
+  </style>
+</head>
+<body>
+
+<div class="invoice">
+  <div class="top">
+    <div class="brand">
+      <h1>NUA Studio</h1>
+      <p>Creative Design</p>
+    </div>
+    <div class="meta">
+      <div id="invoice">Loading...</div>
+      <div id="date">Loading...</div>
+      <div id="due">Loading...</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">Client</div>
+    <div class="value" id="nama">Loading...</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Service</div>
+    <div class="value" id="produk">Loading...</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="total-box">
+    <h2>Total Payment</h2>
+    <div class="total-price" id="harga">Loading...</div>
+  </div>
+  <div class="rekening">
+  <H3>BCA</H3>
+  <H4>4480719650</H4>
+  <P>NURUL AMALIA</P>
+</div>
+
+  <div class="footer">Thank you for trusting NUA Studio — We craft visuals with intention.</div>
+</div>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const invoiceId = urlParams.get("id");
+
+async function fetchInvoice() {
+  if (!invoiceId) {
+    document.getElementById("nama").innerText = "TIDAK ADA ID DI URL";
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://127.0.0.1:3000/invoice/${invoiceId}`);
+    const data = await res.json();
+
+    if (res.ok) {
+      // === 1. JIKA DATA BERHASIL DITEMUKAN ===
+      document.getElementById("invoice").innerText = data.invoice;
+      document.getElementById("nama").innerText = data.nama;
+      document.getElementById("produk").innerText = data.produk;
+      document.getElementById("harga").innerText = data.harga_format;
+
+      // FORMAT TANGGAL
+      const dateDibuat = new Date(data.createdAt);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      
+      // Tanggal Invoice Dibuat
+      document.getElementById("date").innerText = "Date: " + dateDibuat.toLocaleDateString("id-ID", options);
+
+      // Tanggal Jatuh Tempo (+3 Hari)
+      const dateJatuhTempo = new Date(dateDibuat);
+      dateJatuhTempo.setDate(dateDibuat.getDate() + 3);
+      document.getElementById("due").innerText = "Due: " + dateJatuhTempo.toLocaleDateString("id-ID", options);
+
+      // FORMAT STATUS
+      const statusEl = document.getElementById("status");
+      if (data.status === "PENDING") {
+        statusEl.innerText = "Status : Pending Payment";
+        statusEl.style.color = "#c59d00"; // Kuning
+      } else {
+        statusEl.innerText = "Status : Payment Success";
+        statusEl.style.color = "#1a9c5c"; // Hijau
+      }
+
+    } else {
+      // === 2. JIKA DATA SUDAH HILANG (SERVER RESTART) ===
+      document.getElementById("nama").innerText = "DATA TERHAPUS (Server habis restart)";
+      document.getElementById("invoice").innerText = invoiceId;
+      document.getElementById("produk").innerText = "-";
+      document.getElementById("harga").innerText = "Rp 0";
+      document.getElementById("date").innerText = "Date: -";
+      document.getElementById("due").innerText = "Due: -";
+      document.getElementById("status").innerText = "Status : Unknown";
+    }
+    
+  } catch (err) {
+    // === 3. JIKA SERVER MATI ===
+    console.error("ERROR KONEKSI:", err);
+    document.getElementById("nama").innerText = "SERVER MATI / ERROR JARINGAN";
+  }
+}
+
+fetchInvoice();
+</script>
+</body>
+</html>

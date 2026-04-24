@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>NUA Admin - Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      background: #0f0f14;
+      color: white;
+      padding: 40px;
+    }
+
+    .box {
+      max-width: 500px;
+      margin: auto;
+      background: #1a1a22;
+      padding: 25px;
+      border-radius: 12px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #20036e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+    }
+
+    .link-box {
+      background: #000;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Invoice Generator</h2>
+
+  <input type="text" id="nama" placeholder="Nama Client">
+
+  <select id="produk">
+    <option value="">Pilih Layanan</option>
+    <option value="Branding">Branding</option>
+    <option value="Social Media Content">Social Media Content</option>
+    <option value="Website">Website</option>
+    <option value="UI/UX Design">UI/UX Design</option>
+  </select>
+
+  <input type="number" id="harga" placeholder="Harga">
+
+  <button onclick="generate()">Generate Invoice</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+// 🔐 CEK LOGIN
+// Di generator.html
+const token = localStorage.getItem("token");
+console.log("Token yang ditemukan:", token);
+
+if (!token) {
+    alert("Anda belum login!");
+    window.location.href = "login.html";
+}
+
+// 🚀 GENERATE
+async function generate() {
+  const nama = document.getElementById("nama").value;
+  const produk = document.getElementById("produk").value;
+  const harga = document.getElementById("harga").value;
+
+  if (!nama || !produk || !harga) {
+    alert("Lengkapi semua data!");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ nama, produk, harga })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert("Gagal membuat invoice");
+      return;
+    }
+
+    const link = data.invoice_link;
+
+    document.getElementById("result").innerHTML = `
+      <p><b>${data.invoice}</b></p>
+      <div class="link-box">${link}</div>
+
+      <button onclick="copyLink('${link}')">Copy Link</button>
+      <button onclick="openLink('${link}')">Preview</button>
+      <button onclick="sendWA('${link}')">Kirim WA</button>
+    `;
+
+  } catch (err) {
+    alert("Server error");
+    console.error(err);
+  }
+}
+
+function copyLink(link) {
+  navigator.clipboard.writeText(link);
+  alert("Link copied!");
+}
+
+function openLink(link) {
+  window.open(link, "_blank");
+}
+
+function sendWA(link) {
+  const pesan = "Halo, berikut invoice Anda:%0A" + link;
+  window.open(`https://wa.me/6283130023327?text=${pesan}`, "_blank");
+}
+</script>
+
+</body>
+</html>
