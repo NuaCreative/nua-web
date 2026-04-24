@@ -20,16 +20,27 @@
   </div>
 
   <script>
-    function login() {
-      const pass = document.getElementById("pass").value;
-      // Password sederhana: silakan ganti 'nua2026' dengan password pilihanmu
-      if (pass === "nua2026") {
-        localStorage.setItem("token", "authenticated_nua");
-        window.location.href = "generator.html";
-      } else {
-        alert("Password Salah!");
-      }
+  function login() {
+    const pass = document.getElementById("pass").value;
+    
+    // Pastikan password sesuai dengan keinginanmu
+    if (pass === "nua2026") {
+      localStorage.setItem("token", "authenticated_nua");
+      
+      // KUNCI PERBAIKAN: Menambahkan timestamp agar browser tidak pakai cache lama
+      window.location.href = "generator.html?v=" + Date.now();
+    } else {
+      alert("Password Salah!");
     }
+  }
+
+  // Tambahan: Biar bisa login pakai tombol 'Enter' di keyboard
+  document.getElementById("pass").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      login();
+    }
+  });
+</script>
   </script>
 </body>
 </html>
