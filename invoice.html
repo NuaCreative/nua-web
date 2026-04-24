@@ -34,9 +34,9 @@
       <p>Creative Design Agency</p>
     </div>
     <div class="meta">
-      <div id="invoiceID">NUA-ONLINE</div>
-      <div id="date">-</div>
-      <div id="due">-</div>
+      <div id="invoiceID">ID: ...</div>
+      <div id="date">Date: ...</div>
+      <div id="due">Due: ...</div>
     </div>
   </div>
 
@@ -69,18 +69,18 @@
 </div>
 
 <script>
-  // Script ini membaca data dari alamat web (URL)
-  const urlData = new URLSearchParams(window.location.search);
-  
-  const id = urlData.get("id");
-  const nama = urlData.get("nama");
-  const produk = urlData.get("produk");
-  const harga = urlData.get("harga");
+  // Mengambil data dari URL
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const nama = params.get("nama");
+  const produk = params.get("produk");
+  const harga = params.get("harga");
 
+  // Jika ID ditemukan, masukkan data ke HTML
   if (id) {
     document.getElementById("invoiceID").innerText = "ID: " + id;
-    document.getElementById("dispNama").innerText = nama;
-    document.getElementById("dispProduk").innerText = produk;
+    document.getElementById("dispNama").innerText = nama || "Client";
+    document.getElementById("dispProduk").innerText = produk || "-";
     
     const nominal = parseInt(harga) || 0;
     document.getElementById("dispHarga").innerText = "Rp " + nominal.toLocaleString("id-ID");
