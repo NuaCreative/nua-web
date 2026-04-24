@@ -1,50 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Login Admin</title>
+  <meta charset="UTF-8">
+  <title>Login - NUA Studio Admin</title>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #0f0f14; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .login-box { background: #1a1a22; padding: 40px; border-radius: 12px; width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    h2 { color: #c6a96b; margin-bottom: 25px; letter-spacing: 2px; }
+    input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: none; background: #2a2a35; color: white; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; background: #20036e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    button:hover { background: #3d0fbf; }
+  </style>
 </head>
 <body>
+  <div class="login-box">
+    <h2>NUA ADMIN</h2>
+    <input type="password" id="pass" placeholder="Masukkan Password">
+    <button onclick="login()">LOGIN</button>
+  </div>
 
-<h2>Login Admin</h2>
-
-<input type="text" id="username" placeholder="Username" value="nua.nrl">
-<input type="password" id="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-
-<script>
-async function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    const res = await fetch("http://127.0.0.1:3000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ username, password })
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-      console.log("Login sukses, menyimpan token...");
-      localStorage.setItem("token", data.token);
-      alert("Login Berhasil! Klik OK untuk lanjut ke Generator.");
-      window.location.href = "generator.html";
-    } else {
-      // INI YANG AKAN MUNCUL JIKA PASSWORD/USERNAME SALAH
-      alert("Login Gagal: Username atau Password salah!");
-      console.log("Pesan dari server:", data);
+  <script>
+    function login() {
+      const pass = document.getElementById("pass").value;
+      // Password sederhana: silakan ganti 'nua2026' dengan password pilihanmu
+      if (pass === "nua2026") {
+        localStorage.setItem("token", "authenticated_nua");
+        window.location.href = "generator.html";
+      } else {
+        alert("Password Salah!");
+      }
     }
-  } catch (err) {
-    // INI YANG AKAN MUNCUL JIKA SERVER MATI ATAU ERROR CORS
-    alert("Koneksi gagal! Pastikan server Node.js sudah running di port 3000.");
-    console.error("Error Detail:", err);
-  }
-}
-</script>
-
+  </script>
 </body>
 </html>

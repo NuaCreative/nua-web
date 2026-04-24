@@ -2,148 +2,88 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>NUA Admin - Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <title>Generator - NUA Studio</title>
   <style>
-    body {
-      font-family: Poppins, sans-serif;
-      background: #0f0f14;
-      color: white;
-      padding: 40px;
-    }
-
-    .box {
-      max-width: 500px;
-      margin: auto;
-      background: #1a1a22;
-      padding: 25px;
-      border-radius: 12px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #20036e;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .result {
-      margin-top: 20px;
-    }
-
-    .link-box {
-      background: #000;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-      word-break: break-all;
-    }
+    body { font-family: 'Poppins', sans-serif; background: #0f0f14; color: white; padding: 40px; }
+    .box { max-width: 500px; margin: auto; background: #1a1a22; padding: 30px; border-radius: 12px; border: 1px solid #333; }
+    h2 { color: #c6a96b; text-align: center; }
+    input, select { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #444; background: #2a2a35; color: white; box-sizing: border-box; }
+    .btn-gen { width: 100%; padding: 14px; background: #20036e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
+    .result { margin-top: 30px; padding: 20px; background: #000; border-radius: 10px; display: none; }
+    .link-box { background: #222; padding: 10px; border-radius: 5px; font-size: 11px; word-break: break-all; margin: 10px 0; color: #888; }
+    .action-btn { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
+    .btn-wa { background: #25d366; color: white; }
+    .btn-preview { background: #fff; color: #000; }
+    .logout-btn { background: none; color: #ff4444; border: none; cursor: pointer; display: block; margin: 20px auto; }
   </style>
 </head>
-
 <body>
 
 <div class="box">
   <h2>Invoice Generator</h2>
-
   <input type="text" id="nama" placeholder="Nama Client">
-
   <select id="produk">
     <option value="">Pilih Layanan</option>
-    <option value="Branding">Branding</option>
+    <option value="Branding Design">Branding Design</option>
     <option value="Social Media Content">Social Media Content</option>
-    <option value="Website">Website</option>
     <option value="UI/UX Design">UI/UX Design</option>
+    <option value="Website Development">Website Development</option>
   </select>
+  <input type="number" id="harga" placeholder="Harga (Contoh: 200000)">
 
-  <input type="number" id="harga" placeholder="Harga">
+  <button class="btn-gen" onclick="generate()">GENERATE INVOICE</button>
 
-  <button onclick="generate()">Generate Invoice</button>
-
-  <div class="result" id="result"></div>
+  <div class="result" id="resultArea">
+    <p style="margin:0; color:#c6a96b;">Invoice Berhasil!</p>
+    <div class="link-box" id="displayLink"></div>
+    <button class="action-btn btn-preview" onclick="openLink()">Preview Online</button>
+    <button class="action-btn btn-wa" onclick="sendWA()">Kirim via WhatsApp</button>
+  </div>
+  
+  <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
 <script>
-// 🔐 CEK LOGIN
-// Di generator.html
-const token = localStorage.getItem("token");
-console.log("Token yang ditemukan:", token);
-
-if (!token) {
-    alert("Anda belum login!");
+  // 1. CEK LOGIN
+  if (localStorage.getItem("token") !== "authenticated_nua") {
     window.location.href = "login.html";
-}
-
-// 🚀 GENERATE
-async function generate() {
-  const nama = document.getElementById("nama").value;
-  const produk = document.getElementById("produk").value;
-  const harga = document.getElementById("harga").value;
-
-  if (!nama || !produk || !harga) {
-    alert("Lengkapi semua data!");
-    return;
   }
 
-  try {
-    const res = await fetch("http://localhost:3000/order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ nama, produk, harga })
-    });
+  let currentLink = "";
+  let currentNama = "";
 
-    const data = await res.json();
+  function generate() {
+    const nama = document.getElementById("nama").value;
+    const produk = document.getElementById("produk").value;
+    const harga = document.getElementById("harga").value;
 
-    if (!data.success) {
-      alert("Gagal membuat invoice");
+    if (!nama || !produk || !harga) {
+      alert("Mohon isi semua data!");
       return;
     }
 
-    const link = data.invoice_link;
+    const invID = "NUA-" + Date.now();
+    // SESUAIKAN LINK DIBAWAH INI DENGAN LINK GITHUB KAMU
+    const baseUrl = "https://nuacreative.github.io/nua-web/invoice.html";
+    
+    currentNama = nama;
+    currentLink = `${baseUrl}?id=${invID}&nama=${encodeURIComponent(nama)}&produk=${encodeURIComponent(produk)}&harga=${harga}`;
 
-    document.getElementById("result").innerHTML = `
-      <p><b>${data.invoice}</b></p>
-      <div class="link-box">${link}</div>
-
-      <button onclick="copyLink('${link}')">Copy Link</button>
-      <button onclick="openLink('${link}')">Preview</button>
-      <button onclick="sendWA('${link}')">Kirim WA</button>
-    `;
-
-  } catch (err) {
-    alert("Server error");
-    console.error(err);
+    document.getElementById("resultArea").style.display = "block";
+    document.getElementById("displayLink").innerText = currentLink;
   }
-}
 
-function copyLink(link) {
-  navigator.clipboard.writeText(link);
-  alert("Link copied!");
-}
+  function openLink() { window.open(currentLink, "_blank"); }
 
-function openLink(link) {
-  window.open(link, "_blank");
-}
+  function sendWA() {
+    const pesan = `Halo ${currentNama},%0A%0ABerikut adalah invoice resmi dari NUA Studio.%0ASilakan klik link di bawah ini untuk detailnya:%0A%0A${currentLink}%0A%0ATerima kasih!`;
+    window.open(`https://wa.me/?text=${pesan}`, "_blank");
+  }
 
-function sendWA(link) {
-  const pesan = "Halo, berikut invoice Anda:%0A" + link;
-  window.open(`https://wa.me/6283130023327?text=${pesan}`, "_blank");
-}
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+  }
 </script>
-
 </body>
 </html>
