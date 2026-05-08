@@ -4,84 +4,279 @@
   <meta charset="UTF-8">
   <title>Invoice - NUA Studio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
-    body { margin: 0; background: #0f0f14; font-family: 'Poppins', sans-serif; color: #333; padding: 20px; }
-    .invoice { max-width: 700px; margin: auto; background: #ffffff; border-radius: 14px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); position: relative; overflow: hidden; box-sizing: border-box;}
-    .invoice::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, #20036e, #c6a96b); }
-    .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .brand h1 { margin: 0; font-size: 28px; color: #20036e; letter-spacing: 1px; font-family: 'Playfair Display', serif;}
-    .brand p { margin: 0; font-size: 12px; color: #777; }
-    .meta { text-align: right; font-size: 13px; color: #666; font-weight: bold; }
-    .section { margin-bottom: 25px; }
-    .label { font-size: 12px; color: #999; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-    .value { font-size: 18px; font-weight: 500; color: #111; }
-    .divider { height: 1px; background: #eee; margin: 30px 0; }
-    .total-price { font-size: 26px; font-weight: bold; color: #20036e; }
-    .rekening-box { margin-top: 30px; padding: 20px; background: #fdfbf7; border: 1px solid #f0e6d2; border-radius: 8px; }
-    .bank-label { font-size: 10px; color: #c6a96b; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
-    .bank-info h3 { margin: 0; color: #20036e; font-size: 22px; letter-spacing: 1px; }
-    .bank-info p { margin: 5px 0 0 0; font-size: 14px; color: #555; }
-    .footer { margin-top: 40px; font-size: 11px; color: #aaa; text-align: center; letter-spacing: 1px; }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      padding:20px;
+      background:#0f0f14;
+      font-family:'Poppins',sans-serif;
+    }
+
+    .invoice{
+      max-width:700px;
+      margin:auto;
+      background:white;
+      border-radius:14px;
+      padding:40px;
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .invoice::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:6px;
+      background:linear-gradient(
+        90deg,
+        #20036e,
+        #c6a96b
+      );
+    }
+
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      margin-bottom:40px;
+    }
+
+    .brand h1{
+      margin:0;
+      color:#20036e;
+      font-size:28px;
+      font-family:'Playfair Display',serif;
+    }
+
+    .brand p{
+      margin:3px 0 0;
+      color:#777;
+      font-size:12px;
+    }
+
+    .meta{
+      font-size:13px;
+      font-weight:600;
+      color:#555;
+    }
+
+    .section{
+      margin-bottom:30px;
+    }
+
+    .label{
+      font-size:12px;
+      color:#999;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .value{
+      font-size:18px;
+      color:#111;
+      font-weight:500;
+    }
+
+    #dispDeskripsi{
+      margin-top:12px;
+      font-size:14px;
+      color:#666;
+      line-height:1.7;
+      white-space:pre-line;
+    }
+
+    .divider{
+      height:1px;
+      background:#eee;
+      margin:30px 0;
+    }
+
+    .total-box{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .total-price{
+      font-size:32px;
+      color:#20036e;
+      font-weight:700;
+    }
+
+    .rekening-box{
+      margin-top:35px;
+      padding:22px;
+      border-radius:10px;
+      background:#fdfbf7;
+      border:1px solid #f0e6d2;
+    }
+
+    .bank-label{
+      font-size:10px;
+      color:#c6a96b;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .bank-info h3{
+      margin:0;
+      color:#20036e;
+      font-size:30px;
+    }
+
+    .bank-info p{
+      margin-top:5px;
+      color:#555;
+      font-size:14px;
+    }
+
+    .footer{
+      margin-top:40px;
+      text-align:center;
+      color:#aaa;
+      font-size:11px;
+      letter-spacing:1px;
+    }
+
   </style>
 </head>
+
 <body>
 
 <div class="invoice">
+
   <div class="top">
+
     <div class="brand">
       <h1>NUA Studio</h1>
       <p>Creative Design Agency</p>
     </div>
+
     <div class="meta">
-      <span id="invoiceID">NOMOR INVOICE</span>
+      <span id="invoiceID">ID: -</span>
     </div>
+
   </div>
 
+  <!-- CLIENT -->
   <div class="section">
-    <div class="label">Client Name</div>
-    <div class="value" id="dispNama">Menunggu Data...</div>
+
+    <div class="label">
+      Client Name
+    </div>
+
+    <div class="value" id="dispNama">
+      -
+    </div>
+
   </div>
 
+  <!-- SERVICE -->
   <div class="section">
-    <div class="label">Service Description</div>
-    <div class="value" id="dispProduk">-</div>
+
+    <div class="label">
+      Service Description
+    </div>
+
+    <div class="value" id="dispProduk">
+      -
+    </div>
+
+    <div id="dispDeskripsi">
+      -
+    </div>
+
   </div>
 
   <div class="divider"></div>
 
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <div class="label">Total Amount Due</div>
-    <div class="total-price" id="dispHarga">Rp 0</div>
+  <!-- TOTAL -->
+  <div class="total-box">
+
+    <div class="label">
+      Total Amount Due
+    </div>
+
+    <div class="total-price" id="dispHarga">
+      Rp 0
+    </div>
+
   </div>
 
+  <!-- PAYMENT -->
   <div class="rekening-box">
-    <div class="bank-label">Transfer Payment</div>
+
+    <div class="bank-label">
+      Transfer Payment
+    </div>
+
     <div class="bank-info">
       <h3>4480719650</h3>
       <p>BCA — NURUL AMALIA</p>
     </div>
+
   </div>
 
-  <div class="footer">Thank you for choosing NUA Studio. We build visions into reality.</div>
+  <div class="footer">
+    Thank you for choosing NUA Studio.
+    We build visions into reality.
+  </div>
+
 </div>
 
 <script>
-  // Pastikan tidak ada satupun kata 'Date' atau 'Due' di bawah sini
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-  const nama = params.get("nama");
-  const produk = params.get("produk");
-  const harga = params.get("harga");
 
-  if (id) {
-    document.getElementById("invoiceID").innerText = "ID: " + id;
-    document.getElementById("dispNama").innerText = nama || "Client";
-    document.getElementById("dispProduk").innerText = produk || "-";
-    
-    const nominal = parseInt(harga) || 0;
-    document.getElementById("dispHarga").innerText = "Rp " + nominal.toLocaleString("id-ID");
-  }
+  // URL PARAMS
+  const params =
+    new URLSearchParams(window.location.search);
+
+  // DATA
+  const id =
+    params.get("id");
+
+  const nama =
+    params.get("nama");
+
+  const produk =
+    params.get("produk");
+
+  const deskripsi =
+    params.get("deskripsi");
+
+  const harga =
+    params.get("harga");
+
+  // TAMPILKAN
+  document.getElementById("invoiceID").innerText =
+    "ID: " + id;
+
+  document.getElementById("dispNama").innerText =
+    nama;
+
+  document.getElementById("dispProduk").innerText =
+    produk;
+
+  document.getElementById("dispDeskripsi").innerText =
+    deskripsi;
+
+  document.getElementById("dispHarga").innerText =
+    "Rp " +
+    parseInt(harga).toLocaleString("id-ID");
+
 </script>
+
 </body>
 </html>
