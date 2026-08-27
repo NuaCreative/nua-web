@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
+
     *{
       box-sizing:border-box;
     }
@@ -131,6 +132,7 @@
       margin:25px auto 0;
       font-size:14px;
     }
+
   </style>
 </head>
 
@@ -165,7 +167,10 @@
     placeholder="Harga"
   >
 
-  <button class="btn-gen" onclick="generate()">
+  <button
+    class="btn-gen"
+    onclick="generate()"
+  >
     GENERATE INVOICE
   </button>
 
@@ -193,138 +198,187 @@
 
   </div>
 
-  <button class="logout-btn" onclick="logout()">
+  <button
+    class="logout-btn"
+    onclick="logout()"
+  >
     Logout
   </button>
 
 </div>
 
-<script>
 
-  // =========================
-  // LOGIN CHECK
-  // =========================
-  if (localStorage.getItem("token") !== "authenticated_nua") {
-    window.location.href = "login.html";
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// =========================
+// FIREBASE CONFIG
+// =========================
+const firebaseConfig = {
+
+  apiKey: "AIzaSyBszuuPUtsQrUqrIlQ6XqIKpmNq78JmZTw",
+
+  authDomain: "nua-studio-15.firebaseapp.com",
+
+  projectId: "nua-studio-15",
+
+  storageBucket: "nua-studio-15.firebasestorage.app",
+
+  messagingSenderId: "561626006704",
+
+  appId: "1:561626006704:web:7343238d1ed23dcdb2e775"
+
+};
+
+
+// init firebase
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
+
+
+// =========================
+// LOGIN CHECK
+// =========================
+if(localStorage.getItem("token") !== "authenticated_nua"){
+
+  window.location.href =
+    "login.html";
+
+}
+
+let currentLink = "";
+
+
+// =========================
+// GENERATE
+// =========================
+window.generate = async function(){
+
+  const nama =
+    document.getElementById("nama").value.trim();
+
+  const produk =
+    document.getElementById("produk").value;
+
+  const deskripsi =
+    document.getElementById("deskripsi").value.trim();
+
+  const harga =
+    document.getElementById("harga").value;
+
+  // validasi
+  if(!nama || !produk || !harga){
+
+    alert("Mohon isi Nama, Layanan, dan Harga!");
+    return;
+
   }
 
-  let currentLink = "";
+  // invoice id
+  const invID =
+    "NUA-" + Date.now();
 
-  // =========================
-  // GENERATE
-  // =========================
-  function generate() {
-
-    const nama =
-      document.getElementById("nama").value.trim();
-
-    const produk =
-      document.getElementById("produk").value;
-
-    const deskripsi =
-      document.getElementById("deskripsi").value.trim();
-
-    const harga =
-      document.getElementById("harga").value;
-
-    // validasi
-    if (!nama || !produk || !harga) {
-      alert("Mohon isi Nama, Layanan, dan Harga!");
-      return;
+  // simpan ke firestore
+  await setDoc(
+    doc(db, "invoices", invID),
+    {
+      nama,
+      produk,
+      deskripsi,
+      harga,
+      createdAt: new Date().toISOString()
     }
+  );
 
-    // invoice id
-    const invID =
-      "NUA-" + Date.now();
+  // LINK PENDEK
+  currentLink =
+    `https://nuacreative.github.io/nua-web/invoice.html?id=${invID}`;
 
-    // invoice url
-    const baseUrl =
-      "https://nuacreative.github.io/nua-web/invoice.html";
+  // tampilkan hasil
+  document.getElementById("resultArea").style.display =
+    "block";
 
-    // generate link
-    currentLink =
-      `${baseUrl}` +
-      `?id=${encodeURIComponent(invID)}` +
-      `&nama=${encodeURIComponent(nama)}` +
-      `&produk=${encodeURIComponent(produk)}` +
-      `&deskripsi=${encodeURIComponent(deskripsi)}` +
-      `&harga=${encodeURIComponent(harga)}` +
-      `&v=${Date.now()}`;
+  document.getElementById("displayLink").innerText =
+    currentLink;
 
-    // tampilkan hasil
-    document.getElementById("resultArea").style.display =
-      "block";
+}
 
-    document.getElementById("displayLink").innerText =
-      currentLink;
+
+// =========================
+// PREVIEW
+// =========================
+window.openLink = function(){
+
+  if(!currentLink){
+
+    alert("Generate invoice dulu!");
+    return;
+
   }
 
-  // =========================
-  // PREVIEW
-  // =========================
-  function openLink() {
+  window.open(currentLink, "_blank");
 
-    if (!currentLink) {
-      alert("Generate invoice dulu!");
-      return;
-    }
+}
 
-    window.open(currentLink, "_blank");
+
+// =========================
+// WHATSAPP
+// =========================
+window.sendWA = function(){
+
+  if(!currentLink){
+
+    alert("Generate invoice dulu!");
+    return;
+
   }
 
-  // =========================
-  // WHATSAPP
-  // =========================
-  function sendWA() {
+  const namaClient =
+    document.getElementById("nama").value;
 
-    if (!currentLink) {
-      alert("Generate invoice dulu!");
-      return;
-    }
-
-    const namaClient =
-      document.getElementById("nama").value;
-
-    const deskripsi =
-      document.getElementById("deskripsi").value.trim();
-
-    let detailText = "";
-
-    if (deskripsi) {
-
-      detailText =
-`\nDetail Pesanan:
-${deskripsi}\n`;
-
-    }
-
-    const pesan =
+  const pesan =
 `Halo *${namaClient}*,
 
 Berikut invoice resmi dari *NUA Studio*.
 
-${detailText}
 Silakan cek melalui link berikut:
 ${currentLink}
 
 Terima kasih telah mempercayakan project Anda kepada kami ✨`;
 
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(pesan)}`,
-      "_blank"
-    );
-  }
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(pesan)}`,
+    "_blank"
+  );
 
-  // =========================
-  // LOGOUT
-  // =========================
-  function logout() {
+}
 
-    localStorage.removeItem("token");
 
-    window.location.href =
-      "login.html";
-  }
+// =========================
+// LOGOUT
+// =========================
+window.logout = function(){
+
+  localStorage.removeItem("token");
+
+  window.location.href =
+    "login.html";
+
+}
 
 </script>
 
